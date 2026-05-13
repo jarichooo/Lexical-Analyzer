@@ -1,10 +1,10 @@
 # Lexical Analyzer
 
-A comprehensive lexical analyzer (tokenizer) for Python, Java, and C++ source code. This tool tokenizes source code and outputs tokens with their types as a list of dictionaries.
+A lightweight, reusable Python module for tokenizing source code in Python, Java, and C++. Perfect for code analysis, syntax highlighting, and compiler development.
 
 ## Overview
 
-This project provides a unified lexical analyzer that can tokenize source code from three popular programming languages: Python, Java, and C++. The analyzer recognizes lexical elements such as keywords, identifiers, literals, operators, and punctuation symbols, with comprehensive error handling and formatted output as dictionaries.
+The Lexical Analyzer is a pure Python module that converts source code into a list of tokens with their types, values, and positions. It's designed to be imported and used in other Python scripts and applications.
 
 ## Features
 
@@ -20,127 +20,48 @@ This project provides a unified lexical analyzer that can tokenize source code f
   - Preprocessor directives (C++ only)
 - **Error Handling**: Detects and reports invalid tokens with line and column information
 - **Precise Position Tracking**: Each token includes line and column numbers for easy debugging
+- **Importable Module**: Use as a module in your own Python projects
 
 ## Installation
 
 ### Prerequisites
 
-- **Python 3.7 or higher** installed on your system
-- **Git** (optional, for cloning the repository)
+- **Python 3.7 or higher**
+- **Git** (optional, for cloning)
 
-### Windows
+### Quick Setup
 
-#### Method 1: Using Git Bash or Command Prompt
+#### Windows
+```bash
+git clone https://github.com/jarichooo/Lexical-Analyzer.git
+cd Lexical-Analyzer
+python lexical_analyzer.py  # Just to verify it works
+```
 
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, and press Enter
+#### Linux (Ubuntu)
+```bash
+git clone https://github.com/jarichooo/Lexical-Analyzer.git
+cd Lexical-Analyzer
+python3 test_languages.py
+```
 
-2. **Clone the repository**
-   ```bash
-   git clone https://github.com/jarichooo/Lexical-Analyzer.git
-   cd Lexical-Analyzer
-   ```
+#### Linux (Fedora)
+```bash
+git clone https://github.com/jarichooo/Lexical-Analyzer.git
+cd Lexical-Analyzer
+python3 test_languages.py
+```
 
-3. **Verify Python installation**
-   ```bash
-   python --version
-   ```
-
-4. **Run the lexical analyzer**
-   ```bash
-   python lexical_analyzer.py
-   ```
-
-#### Method 2: Manual Download
-
-1. Visit https://github.com/jarichooo/Lexical-Analyzer
-2. Click the green **Code** button
-3. Click **Download ZIP**
-4. Extract the ZIP file to your desired location
-5. Open Command Prompt in the extracted folder
-6. Run: `python lexical_analyzer.py`
-
-### Linux (Ubuntu)
-
-1. **Open Terminal** (Ctrl + Alt + T)
-
-2. **Ensure Python 3 is installed**
-   ```bash
-   python3 --version
-   ```
-   
-   If not installed, install it:
-   ```bash
-   sudo apt update
-   sudo apt install python3 python3-pip
-   ```
-
-3. **Clone the repository**
-   ```bash
-   git clone https://github.com/jarichooo/Lexical-Analyzer.git
-   cd Lexical-Analyzer
-   ```
-
-4. **Run the lexical analyzer**
-   ```bash
-   python3 lexical_analyzer.py
-   ```
-
-### Linux (Fedora)
-
-1. **Open Terminal** (Ctrl + Alt + T)
-
-2. **Ensure Python 3 is installed**
-   ```bash
-   python3 --version
-   ```
-   
-   If not installed, install it:
-   ```bash
-   sudo dnf update
-   sudo dnf install python3 python3-pip
-   ```
-
-3. **Clone the repository**
-   ```bash
-   git clone https://github.com/jarichooo/Lexical-Analyzer.git
-   cd Lexical-Analyzer
-   ```
-
-4. **Run the lexical analyzer**
-   ```bash
-   python3 lexical_analyzer.py
-   ```
-
-### macOS
-
-1. **Open Terminal** (Command + Space, type "Terminal")
-
-2. **Check if Python 3 is installed**
-   ```bash
-   python3 --version
-   ```
-   
-   If not installed, install Python 3 using Homebrew:
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   brew install python3
-   ```
-
-3. **Clone the repository**
-   ```bash
-   git clone https://github.com/jarichooo/Lexical-Analyzer.git
-   cd Lexical-Analyzer
-   ```
-
-4. **Run the lexical analyzer**
-   ```bash
-   python3 lexical_analyzer.py
-   ```
+#### macOS
+```bash
+git clone https://github.com/jarichooo/Lexical-Analyzer.git
+cd Lexical-Analyzer
+python3 test_languages.py
+```
 
 ## Usage
 
-### Basic Usage
+### Basic Import and Usage
 
 ```python
 from lexical_analyzer import LexicalAnalyzer
@@ -152,7 +73,7 @@ analyzer = LexicalAnalyzer('python')
 code = "x = 42"
 tokens = analyzer.tokenize(code)
 
-# Display tokens
+# Use the tokens
 for token in tokens:
     print(token)
 ```
@@ -227,6 +148,74 @@ for token in tokens:
     print(token)
 ```
 
+## Running Tests
+
+To test the analyzer with all three languages, run the test suite:
+
+**Windows:**
+```bash
+python test_languages.py
+```
+
+**Linux/macOS:**
+```bash
+python3 test_languages.py
+```
+
+This will execute 6 comprehensive tests:
+1. Python tokenization
+2. Java tokenization
+3. C++ tokenization
+4. Error handling
+5. Token filtering
+6. Position tracking
+
+## Processing Tokens
+
+### Filter Tokens by Type
+
+```python
+analyzer = LexicalAnalyzer('python')
+tokens = analyzer.tokenize("def add(a, b): return a + b")
+
+# Get only keywords
+keywords = [t for t in tokens if t['type'] == 'KEYWORD']
+
+# Get only identifiers
+identifiers = [t for t in tokens if t['type'] == 'IDENTIFIER']
+
+# Get only operators
+operators = [t for t in tokens if t['type'] == 'OPERATOR']
+
+# Get errors (if any)
+errors = [t for t in tokens if t['type'] == 'ERROR']
+```
+
+### Count Tokens by Type
+
+```python
+token_counts = {}
+for token in tokens:
+    token_type = token['type']
+    token_counts[token_type] = token_counts.get(token_type, 0) + 1
+
+for token_type, count in token_counts.items():
+    print(f"{token_type}: {count}")
+```
+
+### Write Tokens to File
+
+```python
+import json
+
+analyzer = LexicalAnalyzer('python')
+tokens = analyzer.tokenize("x = 42")
+
+# Save as JSON
+with open('tokens.json', 'w') as f:
+    json.dump(tokens, f, indent=2)
+```
+
 ## Supported Languages
 
 ### Python
@@ -253,7 +242,7 @@ for token in tokens:
 - **Comments**: Single-line (`//`) and multi-line (`/* */`)
 - **Numbers**: Integers, floats, hex (`0x`), binary (`0b`), scientific notation
 - **Preprocessor Directives**: `#include`, `#define`, `#ifdef`, etc.
-- **Operators**: All C++ operators including `::`Scope resolution, `->`, `::`, etc.
+- **Operators**: All C++ operators including scope resolution (`::`), arrow (`->`), etc.
 
 ## Token Types
 
@@ -272,22 +261,6 @@ The analyzer recognizes the following token types:
 | `PREPROCESSOR` | C++ preprocessor directives | `#include`, `#define` |
 | `ERROR` | Invalid/unrecognized tokens | Invalid characters or sequences |
 
-## Running the Built-in Example
-
-The `lexical_analyzer.py` file includes example code that demonstrates tokenization of Python, Java, and C++:
-
-### Windows
-```bash
-python lexical_analyzer.py
-```
-
-### Linux/macOS
-```bash
-python3 lexical_analyzer.py
-```
-
-This will display tokens for sample Python, Java, and C++ code.
-
 ## API Reference
 
 ### LexicalAnalyzer Class
@@ -296,22 +269,33 @@ This will display tokens for sample Python, Java, and C++ code.
 ```python
 LexicalAnalyzer(language: str)
 ```
-- `language`: Programming language ('python', 'java', or 'cpp')
+- `language`: Programming language (`'python'`, `'java'`, or `'cpp'`)
 - Raises `ValueError` if unsupported language is specified
 
-#### Methods
-
-**tokenize(code: str) -> List[Dict]**
-- Tokenizes the provided source code
-- Returns a list of token dictionaries
-- Each dictionary contains: `type`, `value`, `line`, `column`
+#### Method: tokenize()
+```python
+tokenize(code: str) -> List[Dict]
+```
+- **Parameters**:
+  - `code`: Source code string to tokenize
+- **Returns**: List of token dictionaries
+- **Each token dictionary contains**:
+  - `type`: Token type (KEYWORD, IDENTIFIER, etc.)
+  - `value`: The actual lexeme/text
+  - `line`: Line number in source code (1-indexed)
+  - `column`: Column number (1-indexed)
 
 **Example:**
 ```python
 analyzer = LexicalAnalyzer('python')
 tokens = analyzer.tokenize("x = 42")
 print(tokens)
-# [{'type': 'IDENTIFIER', 'value': 'x', 'line': 1, 'column': 1}, ...]
+# Output:
+# [
+#   {'type': 'IDENTIFIER', 'value': 'x', 'line': 1, 'column': 1},
+#   {'type': 'OPERATOR', 'value': '=', 'line': 1, 'column': 3},
+#   {'type': 'NUMBER', 'value': '42', 'line': 1, 'column': 5}
+# ]
 ```
 
 ## Error Handling
@@ -337,27 +321,25 @@ for token in tokens:
 ```
 Lexical-Analyzer/
 ├── README.md                  # Documentation (you are here)
-├── lexical_analyzer.py        # Main lexical analyzer implementation
-└── .gitignore                 # Git ignore file (if applicable)
+├── CODE_EXPLANATION.md        # Detailed code explanation
+├── lexical_analyzer.py        # Main lexical analyzer module
+├── test_languages.py          # Comprehensive test suite
+└── .gitignore                 # Git ignore file
 ```
 
 ## Troubleshooting
 
-### "Python is not recognized as an internal or external command"
-- **Windows**: Ensure Python is installed and added to PATH. Reinstall Python and check "Add Python to PATH"
-- **Solution**: Use `python3` instead of `python` or reinstall with PATH setup
-
 ### "ModuleNotFoundError: No module named 'lexical_analyzer'"
-- **Solution**: Ensure you're in the correct directory where `lexical_analyzer.py` is located
-- Run: `cd Lexical-Analyzer` before importing
+- **Solution**: Ensure `lexical_analyzer.py` is in the same directory as your script, or add it to your Python path
 
-### "SyntaxError" when running the script
-- **Solution**: Ensure you have Python 3.7 or higher
-- Check: `python --version` or `python3 --version`
+### "ValueError: Unsupported language"
+- **Solution**: Use only `'python'`, `'java'`, or `'cpp'` as language parameter
 
-### Tokens appear on the same line
-- **Note**: This is normal behavior. The analyzer correctly tracks line numbers in the source code
-- Use the `line` and `column` values for precise positioning
+### Position Numbers Don't Match My Editor
+- **Note**: The analyzer uses 1-indexed line and column numbers (starting at 1), which is standard for error reporting
+
+### Tokens Appear on Same Line
+- **Note**: This is correct behavior. The analyzer properly tracks line numbers based on newline characters in the source code
 
 ## Contributing
 
@@ -369,6 +351,15 @@ Contributions are welcome! To contribute:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Use Cases
+
+- **Code Analysis**: Analyze code structure and complexity
+- **Syntax Highlighting**: Build syntax highlighters for IDEs
+- **Code Formatters**: Create custom code formatters
+- **Compiler Development**: First phase of compiler/interpreter development
+- **Linters**: Build custom linters and static analysis tools
+- **Educational**: Learn how lexical analysis works
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -377,7 +368,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For issues, questions, or suggestions:
 - Open an issue on GitHub: https://github.com/jarichooo/Lexical-Analyzer/issues
-- Check existing documentation and examples
+- Check the CODE_EXPLANATION.md for detailed documentation
 
 ## Author
 
@@ -391,3 +382,5 @@ Created by Joshua Jericho D. Barja
 - Comprehensive token recognition
 - Dictionary-based output format
 - Error handling and position tracking
+- Importable module design
+- Comprehensive test suite
